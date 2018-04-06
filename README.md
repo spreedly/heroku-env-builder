@@ -1,2 +1,14 @@
-# heroku-env-builder
-Convert Heroku Config Vars into Java properties values
+# Heroku Env Biulder
+
+Convert Heroku config vars into Java properties values.
+
+Java apps often use properties files for configuration. Heroku apps
+typically like to be configured via environment values (12 factor).
+
+This little app helps bridge the gap.
+
+## Usage
+
+
+## Development
+
