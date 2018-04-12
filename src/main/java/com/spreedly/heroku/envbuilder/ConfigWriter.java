@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -14,13 +15,14 @@ public class ConfigWriter {
 
   private static Logger logger = Logger.getLogger("com.spreedly.heroku.envbuilder.config");
 
-  private EnvRepo env;
+  private Map<String, Object> dependencies;
 
-  public ConfigWriter(EnvRepo env) {
-    this.env = env;
+  public ConfigWriter(Map<String, Object> dependencies) {
+    this.dependencies = dependencies;
   }
 
   public void write(String resourceName) throws Exception {
+    System.out.println("One");
     Properties properties = new Properties();
     properties.load(ClassLoader.getSystemResourceAsStream(resourceName));
 
@@ -31,15 +33,17 @@ public class ConfigWriter {
       }
     }
 
+    System.out.println("Two");
     Collections.sort(builders);
     for (String builder : builders) {
       String builderClassName = (String) properties.remove(builder);
       Class<?> builderClass = Class.forName(builderClassName);
-      Constructor<?> constructor = builderClass.getConstructor(EnvRepo.class);
-      ConfigBuilder configBuilder = (ConfigBuilder) constructor.newInstance(env);
+      Constructor<?> constructor = builderClass.getConstructor(Map.class);
+      ConfigBuilder configBuilder = (ConfigBuilder) constructor.newInstance(dependencies);
       configBuilder.apply(properties);
     }
 
+    System.out.println("Three");
     String configLocation = (String) properties.remove("config.output.location");
     logger.info("Writing properties to: " + configLocation);
 
@@ -49,7 +53,6 @@ public class ConfigWriter {
         out.newLine();
       }
     }
-
   }
 
 }

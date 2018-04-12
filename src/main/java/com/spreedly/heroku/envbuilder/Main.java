@@ -19,7 +19,7 @@ public class Main {
       dependencies.put(EnvRepo.class.getName(), env);
       dependencies.put(KeyStoreRepo.class.getName(), keyStoreRepo);
 
-      ConfigWriter configWriter = new ConfigWriter(env);
+      ConfigWriter configWriter = new ConfigWriter(dependencies);
       for (String config : args) {
         logger.info("Processing file: " + config);
         configWriter.write(config);
