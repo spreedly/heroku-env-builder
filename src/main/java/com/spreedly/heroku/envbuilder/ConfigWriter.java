@@ -22,7 +22,6 @@ public class ConfigWriter {
   }
 
   public void write(String resourceName) throws Exception {
-    System.out.println("One");
     Properties properties = new Properties();
     properties.load(ClassLoader.getSystemResourceAsStream(resourceName));
 
@@ -33,7 +32,6 @@ public class ConfigWriter {
       }
     }
 
-    System.out.println("Two");
     Collections.sort(builders);
     for (String builder : builders) {
       String builderClassName = (String) properties.remove(builder);
@@ -43,7 +41,6 @@ public class ConfigWriter {
       configBuilder.apply(properties);
     }
 
-    System.out.println("Three");
     String configLocation = (String) properties.remove("config.output.location");
     logger.info("Writing properties to: " + configLocation);
 
