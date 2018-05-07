@@ -1,4 +1,4 @@
-# Heroku Env Biulder
+# Heroku Env Builder
 
 Convert Heroku config vars into Java properties values.
 
