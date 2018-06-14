@@ -9,8 +9,11 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.common.config.SslConfigs;
+import org.apache.log4j.Logger;
 
 class HerokuKafkaAuthConfig implements ConfigBuilder {
+
+  private static Logger logger = Logger.getLogger(HerokuKafkaAuthConfig.class);
 
   private EnvRepo envRepo;
 
@@ -22,6 +25,9 @@ class HerokuKafkaAuthConfig implements ConfigBuilder {
   }
 
   public void apply(Properties properties) {
+
+    logger.debug("Applying auth config");
+
     try {
       String bootstrapServersEnvVar = envRepo.replaceWithEnvVar(properties, CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG);
 
@@ -37,15 +43,20 @@ class HerokuKafkaAuthConfig implements ConfigBuilder {
       properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, String.join(",", bootstrapServers));
       Props.log(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, String.join(",", bootstrapServers));
 
+      logger.debug("Checking against bootstrap servers: " + bootstrapServers);
+
       URI uri = new URI(urls[0]);
       switch (uri.getScheme()) {
 
       case "kafka":
+        logger.debug("Choosing plain text");
         properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "PLAINTEXT");
         Props.log(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "PLAINTEXT");
         break;
 
       case "kafka+ssl":
+        logger.debug("Choosing SSL");
+
         properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
         Props.log(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
 

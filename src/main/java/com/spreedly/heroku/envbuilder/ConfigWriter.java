@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 public class ConfigWriter {
 
-  private static Logger logger = Logger.getLogger("com.spreedly.heroku.envbuilder.config");
+  private static Logger logger = Logger.getLogger(ConfigWriter.class);
 
   private Map<String, Object> dependencies;
 
@@ -22,6 +22,8 @@ public class ConfigWriter {
   }
 
   public void write(String resourceName) throws Exception {
+    logger.debug("Will write configuration for " + resourceName);
+
     Properties properties = new Properties();
     properties.load(ClassLoader.getSystemResourceAsStream(resourceName));
 

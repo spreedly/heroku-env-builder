@@ -25,7 +25,7 @@ public class Main {
         configWriter.write(config);
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("Error building out environment", e);
     }
   }
 }
