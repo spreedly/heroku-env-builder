@@ -30,6 +30,7 @@ class HerokuKafkaAuthConfig implements ConfigBuilder {
 
     try {
       String bootstrapServersEnvVar = envRepo.replaceWithEnvVar(properties, CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG);
+      logger.info("Bootstrap servers: " + bootstrapServersEnvVar);
 
       String[] urls = bootstrapServersEnvVar.split(",");
 
